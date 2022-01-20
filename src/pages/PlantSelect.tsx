@@ -85,7 +85,7 @@ export function PlantSelect(){
     }
 
     function handlePlantSelect(plant: PlantProps){
-        navigation.navigate('PlantSave');
+        navigation.navigate('PlantSave', {plant}); //Aqui além de estar chamando a tela desejada para nossa navegação, também estamos puxando os dados da API pra ela
 
     }
 
