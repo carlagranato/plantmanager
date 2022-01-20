@@ -1,16 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState }from 'react';
 import { StyleSheet, Text, Image, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 import colors from '../styles/colors';
 import userImg from '../assets/carla.png'
 import fonts from '../styles/fonts';
 
 export function Header(){
+    const [userName, setUserName] = useState<string>();
+
+    useEffect(() => {
+        async function loadStorageUserName() {
+            const user = await AsyncStorage.getItem('@plantmanager:user');
+            setUserName(user || '');
+
+        }
+
+        loadStorageUserName();
+
+    }, [] ); //Toda vez que o userName mudar, esse useEffect será recarregado. Quando não tem nada no vetor, ele carrega uma vez só
+
     return(
         <View style={styles.container}>
             <View>
                 <Text style={styles.greeting}>Olá,</Text>
-                <Text style={styles.userName}>Carla</Text>
+                <Text style={styles.userName}>
+                    {userName}
+                </Text>
             </View>
 
             <Image source={userImg} style={styles.image} />

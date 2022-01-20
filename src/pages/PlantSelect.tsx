@@ -134,7 +134,7 @@ export function PlantSelect(){
                 ListFooterComponent={
                     loadingMore
                     ? <ActivityIndicator color={colors.green} />
-                    : <></>
+                    : <></> //Podemos escrever null tbm, funciona igual
                 }
                 />
 

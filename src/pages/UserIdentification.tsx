@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, View, Text, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback ,Platform, Keyboard } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Text, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback ,Platform, Keyboard, Alert } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Button } from "../components/button";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
@@ -25,7 +26,11 @@ export function UserIdentification(){
         setName(value)
     }
 
-    function handleSubmit(){
+    async function handleSubmit(){
+        if(!name)
+            return Alert.alert('Me diz como chamar você 😥')
+
+        await AsyncStorage.setItem('@plantmanager:user', name); //para chave sempre colocar @, seguindo de nome do app, e o que vc quer salvar
         navigation.navigate('Confirmation');
     }
 
