@@ -30,8 +30,20 @@ export function UserIdentification(){
         if(!name)
             return Alert.alert('Me diz como chamar você 😥')
 
-        await AsyncStorage.setItem('@plantmanager:user', name); //para chave sempre colocar @, seguindo de nome do app, e o que vc quer salvar
-        navigation.navigate('Confirmation');
+        try {
+            await AsyncStorage.setItem('@plantmanager:user', name); //para chave sempre colocar @, seguindo de nome do app, e o que vc quer salvar
+            navigation.navigate('Confirmation', {
+                title: 'Prontinho',
+                subtitle: 'Agora vamos começar a cuidar das suas plantinhas com muito cuidado.',
+                buttonTitle: 'Começar',
+                icon: 'smile',
+                nextScreen: 'PlantSelect',
+            });
+
+        }catch {
+            Alert.alert('Não foi possível salvar o seu nome 😥')
+        }
+        
     }
 
     return(
