@@ -50,7 +50,9 @@ export function Confirmation(){
                 </Text>
 
                 <View style={styles.footer}>
-                    <Button title='Começar' onPress={handleMoveOn} />
+                    <Button 
+                    title={buttonTitle} 
+                    onPress={handleMoveOn} />
                 </View>
             </View>
         </SafeAreaView>

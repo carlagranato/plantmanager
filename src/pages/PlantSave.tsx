@@ -5,7 +5,7 @@ import { getBottomSpace } from 'react-native-iphone-x-helper';
 import DateTimePicker , { Event } from '@react-native-community/datetimepicker';
 import { format, isBefore } from 'date-fns';
 import { SvgFromUri } from 'react-native-svg';
-import { loadPlant, PlantProps, savePlant } from '../libs/storage';
+import { PlantProps, savePlant } from '../libs/storage';
 import waterdrop from '../assets/waterdrop.png'
 import { Button } from '../components/button';
 import colors from '../styles/colors';
