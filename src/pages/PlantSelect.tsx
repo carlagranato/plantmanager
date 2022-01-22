@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, ActivityIndicatorBase } from "react-native";
+import { View, Text, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import { EnvironmentButton } from "../components/environmentButton";
 import { Header } from "../components/header";
 import { PlantCardPrimary } from "../components/plantCardPrimary";

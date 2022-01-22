@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Image, FlatList, Alert, ScrollView } from 'react-native';
+import { PlantProps, loadPlant, removePlant } from '../libs/storage';
+import { formatDistance } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
 import { Header } from '../components/header';
 import { PlantCardSecondary } from '../components/plantCardSecondary';
+import { Load } from '../components/load';
+
 import waterdrop from '../assets/waterdrop.png'
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
-import { PlantProps, loadPlant, removePlant } from '../libs/storage';
-import { loadAsync } from 'expo-font';
-import { formatDistance } from 'date-fns';
-import { pt } from 'date-fns/locale';
-import { Load } from '../components/load';
 
 
 export function MyPlants(){
@@ -27,7 +28,7 @@ export function MyPlants(){
                 text: 'Sim 😥',
                 onPress: async () => {
                     try {
-                        await removePlant(plant.id)
+                        await removePlant(plant.id);
                         setMyPlants((oldData) => (
                             oldData.filter((item) => item.id != plant.id)
                         ));
@@ -47,11 +48,11 @@ export function MyPlants(){
             const nextTime = formatDistance( //formatDistance calcula a distancia de uma data pra outra
                 new Date(plantsStoraged[0].dateTimeNotification).getTime(),
                 new Date().getTime(),
-                { locale: pt }  //Nossa formatação de data
+                { locale: ptBR }  //Nossa formatação de data
             );
 
             setNextWatered(
-                `Não esqueça de regar a ${plantsStoraged[0].name} à ${nextTime} hora.`
+                `Não esqueça de regar a ${plantsStoraged[0].name} à ${nextTime}.`
             )
             
             setMyPlants(plantsStoraged);
@@ -66,40 +67,47 @@ export function MyPlants(){
         return <Load /> 
 
     return (
-        <View style={styles.container}>
-            <Header />
-            <View style={styles.spotlight}>
+        /* <ScrollView
+            showsVerticalScrollIndicator={false}
+        > */
+            <View style={styles.container}>
+                <Header />
 
-                <Image 
-                    source={waterdrop}
-                    style={styles.spotlightImage}
-                />
+                <View style={styles.spotlight}>
 
-                <Text style={styles.spotlighText}>
-                    {nextWatered}
-                </Text>
+                    <Image 
+                        source={waterdrop}
+                        style={styles.spotlightImage}
+                    />
 
+                    <Text style={styles.spotlighText}>
+                        {nextWatered}
+                    </Text>
+
+                </View>
+
+                <View style={styles.plants}>
+
+                    <Text style={styles.plantsTitle}>
+                        Próximas regadas
+                    </Text>
+
+                    <FlatList data={myPlants} 
+                        keyExtractor={(item) => String(item.id)} 
+                        nestedScrollEnabled //usei essa propriedade no lugar no ScrollView, pois o ScrollView não comporta uma Flalist
+                        renderItem={({item}) => (
+                            <PlantCardSecondary 
+                            data={item} 
+                            handleRemove={() => {handleRemove(item)}}
+                            />
+                    )}
+                    showsVerticalScrollIndicator={false}
+                    // contentContainerStyle={{flex: 1}}
+                    />
+                </View> 
+                        
             </View>
-
-            <View style={styles.plants}>
-
-                <Text style={styles.plantsTitle}>
-                    Próximas regadas
-                </Text>
-
-                <FlatList data={myPlants} 
-                    keyExtractor={(item) => String(item.id)} 
-                    renderItem={({item}) => (
-                        <PlantCardSecondary 
-                        data={item} 
-                        handleRemove={() => {handleRemove(item)}}
-                        />
-                )} 
-                showsVerticalScrollIndicator={false} 
-                contentContainerStyle={{ flex: 1 }}/>
-            </View> 
-                       
-        </View>
+        // </ScrollView> 
     )
 }
 
@@ -109,7 +117,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 30,
-        paddingTop: 50,
         backgroundColor: colors.background,
 
     },
@@ -143,7 +150,6 @@ const styles = StyleSheet.create({
 
     plantsTitle: {
         fontSize: 24,
-        fontFamily: fonts.heading,
         color: colors.heading,
         marginVertical: 25
     }
